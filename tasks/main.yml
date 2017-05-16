@@ -9,7 +9,7 @@
   user:
     name:   '{{ hackmd_user }}'
     group:  '{{ hackmd_group }}'
-    home:   '{{ hackmd_path }}'
+    home:   '{{ hackmd_userhome }}'
     system: yes
   register: hackmd_user_created
 
