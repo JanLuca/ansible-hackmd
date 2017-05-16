@@ -14,12 +14,12 @@
   register: hackmd_user_created
 
 - name: Download hackmd git repo
+  become: yes
+  become_user: '{{ hackmd_user }}'
   git:
     repo: 'https://github.com/hackmdio/hackmd'
     dest: '{{ hackmd_path }}'
     version: "{{ hackmd_version | default('HEAD') }}"
-  become: yes
-  become_user: '{{ hackmd_user }}'
   register: hackmd_git_result
 
 - name: Install config.json
@@ -59,6 +59,8 @@
     line: ' "uws": "~0.14.1",'
 
 - name: Run npm for hackmd
+  become: yes
+  become_user: '{{ hackmd_user }}'
   npm:
     path: '{{ hackmd_path }}'
     global: no
@@ -66,21 +68,19 @@
     state: 'latest'
   environment:
     BUILD_ASSETS: 'false'
-  become: yes
-  become_user: '{{ hackmd_user }}'
 
 - name: Execute npm run build
+  become: yes
+  become_user: '{{ hackmd_user }}'
   shell: 'npm run build'
   args:
     chdir: '{{ hackmd_path }}'
-  become: yes
-  become_user: '{{ hackmd_user }}'
   when: hackmd_git_result.changed or hackmd_config_json_result.changed or hackmd_sequelizerc_result.changed
 
 - name: Execute DB migration
+  become: yes
+  become_user: '{{ hackmd_user }}'
   shell: 'node_modules/.bin/sequelize db:migrate'
   args:
     chdir: '{{ hackmd_path }}'
-  become: yes
-  become_user: '{{ hackmd_user }}'
   when: hackmd_git_result.changed or hackmd_config_json_result.changed or hackmd_sequelizerc_result.changed
