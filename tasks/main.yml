@@ -1,5 +1,7 @@
 ---
 
+become_method: 'sudo'
+
 - name: Create hackmd group
   group:
      name:   '{{ hackmd_group }}'
