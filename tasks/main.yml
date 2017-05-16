@@ -52,6 +52,12 @@
     priv: '{{ hackmd_dbname }}.*:ALL'
     login_unix_socket: /var/run/mysqld/mysqld.sock
 
+- name: Fix packages.json
+  lineinfile:
+    dest: "{{ hackmd_path }}/package.json"
+    regexp: '"uws":'
+    line: ' "uws": "~0.14.1",'
+
 - name: Run npm for hackmd
   npm:
     path: '{{ hackmd_path }}'
