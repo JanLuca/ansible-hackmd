@@ -4,7 +4,7 @@ hackmd_version: '0.5.1'
 
 hackmd_user: 'hackmd'
 hackmd_group: 'hackmd'
-hackmd_path: '/srv/hackmd'
+hackmd_path: '/srv/hackmd/hackmd'
 
 hackmd_domain: 'localhost'
 hackmd_port: '50342'
