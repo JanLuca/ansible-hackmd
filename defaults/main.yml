@@ -1,0 +1,30 @@
+---
+
+hackmd_version: '0.5.1'
+
+hackmd_user: 'hackmd'
+hackmd_group: 'hackmd'
+hackmd_path: '/srv/hackmd'
+
+hackmd_domain: 'localhost'
+hackmd_port: '50342'
+hackmd_urlpath: ''
+hackmd_alloworigin: "['localhost']"
+hackmd_urladdport: 'false'
+hackmd_usessl: 'false'
+hackmd_usecdn: 'false'
+hackmd_allowanonymous: 'true'
+hackmd_allowfreeurl: 'true'
+hackmd_defaultpermission: 'freely'
+hackmd_email: 'true'
+hackmd_allowemailregister: '{{ hackmd_email }}'
+hackmd_sessionname: 'hackmd_session'
+hackmd_imageUploadType: 'filesystem'
+
+hackmd_dbname: 'hackmd'
+hackmd_dbport: '3306'
+hackmd_dbuser: 'hackmd'
+hackmd_dbhost: 'localhost'
+hackmd_dbtype: 'mysql'
+
+hackmd_ldap_enabled: False

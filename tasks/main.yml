@@ -1,0 +1,80 @@
+---
+
+- name: Create hackmd group
+  group:
+     name:   '{{ hackmd_group }}'
+     system: yes
+
+- name: Create hackmd user
+  user:
+    name:   '{{ hackmd_user }}'
+    group:  '{{ hackmd_group }}'
+    home:   '{{ hackmd_path }}'
+    system: yes
+  register: hackmd_user_created
+
+- name: Download hackmd git repo
+  git:
+    repo: 'https://github.com/hackmdio/hackmd'
+    dest: '{{ hackmd_path }}'
+    version: "{{ hackmd_version | default('HEAD') }}"
+  become: yes
+  become_user: '{{ hackmd_user }}'
+  register: hackmd_git_result
+
+- name: Install config.json
+  template:
+    src: 'config.json.jinja2'
+    dest: '{ hackmd_path }}/config.json'
+    owner: '{{ hackmd_user }}'
+    group: '{{ hackmd_group }}'
+    mode: 0600
+  register: hackmd_config_json_result
+
+- name: Install sequelizerc
+  template:
+    src: 'sequelizerc.jinja2'
+    dest: '{{ hackmd_path }}/.sequelizerc'
+    owner: '{{ hackmd_user }}'
+    group: '{{ hackmd_group }}'
+    mode: 0600
+  register: hackmd_sequelizerc_result
+
+- name: create hackmd database
+  mysql_db:
+    name: '{{ hackmd_dbname }}'
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+
+- name: create hackmd database user
+  mysql_user:
+    name: '{{ hackmd_dbuser }}'
+    password: '{{ hackmd_dbpw }}'
+    priv: '{{ hackmd_dbname }}.*:ALL'
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+
+- name: Run npm for hackmd
+  npm:
+    path: '{{ hackmd_path }}'
+    global: no
+    production: yes
+    state: 'latest'
+  environment:
+    BUILD_ASSETS: 'false'
+  become: yes
+  become_user: '{{ hackmd_user }}'
+
+- name: Execute npm run build
+  shell: 'npm run build'
+  args:
+    chdir: '{{ hackmd_path }}'
+  become: yes
+  become_user: '{{ hackmd_user }}'
+  when: hackmd_git_result.changed or hackmd_config_json_result.changed or hackmd_sequelizerc_result.changed
+
+- name: Execute DB migration
+  shell: 'node_modules/.bin/sequelize db:migrate'
+  args:
+    chdir: '{{ hackmd_path }}'
+  become: yes
+  become_user: '{{ hackmd_user }}'
+  when: hackmd_git_result.changed or hackmd_config_json_result.changed or hackmd_sequelizerc_result.changed

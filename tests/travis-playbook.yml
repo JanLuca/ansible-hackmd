@@ -1,0 +1,8 @@
+---
+
+- hosts: all
+  remote_user: root
+  roles:
+  - role: ansible-hackmd
+    hackmd_dbpw: 'secret'
+    hackmd_sessionsecret: 'verysecret'

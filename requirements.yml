@@ -1,0 +1,7 @@
+---
+
+- src: https://github.com/fabianfreyer/ansible-mysql_server.git
+  name: mysql_server
+
+- src: https://github.com/JanLuca/ansible-node.git
+  name: node

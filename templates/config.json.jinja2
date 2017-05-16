@@ -1,0 +1,42 @@
+{
+    "production": {
+        "domain": "{{ hackmd_domain }}",
+        "port": "{{ hackmd_port }}",
+        "urlpath": "{{ hackmd_urlpath }}",
+        "alloworigin": {{ hackmd_alloworigin }},
+        "urladdport": {{ hackmd_urladdport }},
+        "usessl": {{ hackmd_usessl }},
+        "usecdn": {{ hackmd_usecdn }},
+        "allowanonymous": {{ hackmd_allowanonymous }},
+        "allowfreeurl": {{ hackmd_allowfreeurl }},
+        "defaultpermission": "{{ hackmd_defaultpermission }}",
+        "email": {{ hackmd_email }},
+        "allowemailregister": {{ hackmd_allowemailregister }},
+        "sessionname": "{{ hackmd_sessionname }}",
+        "sessionsecret": "{{ hackmd_sessionsecret }}",
+        "imageUploadType": "{{ hackmd_imageUploadType }}"
+        "db": {
+            "username": "{{ hackmd_dbuser }}",
+            "password": "{{ hackmd_dbpw }}",
+            "database": "{{ hackmd_dbname }}",
+            "host": "{{ hackmd_dbhost }}",
+            "port": "{{ hackmd_dbport }}",
+            "dialect": "{{ hackmd_dbtype }}"
+        },
+{% if hackmd_ldap_enabled %}
+        "ldap": {
+            "url": "ldap://change_this",
+            "bindDn": null,
+            "bindCredentials": null,
+            "tokenSecret": "change this",
+            "searchBase": "change this",
+            "searchFilter": "change this",
+            "searchAttributes": "change this",
+            "tlsOptions": {
+                "changeme": "See https://nodejs.org/api/tls.html#tls_tls_connect_options_callback"
+            }
+        },
+{% endif %}
+    }
+}
+
